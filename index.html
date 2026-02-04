@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Valentine 💖</title>
+  <title>Will You Be My Valentine? 🥰✨</title>
 
   <style>
     body {
@@ -23,12 +23,22 @@
       margin: 16px;
     }
 
-    /* IMAGE COLLAGE */
+    /* CUSTOM TEXT AFTER YES */
+    #yesText {
+      display: none;
+      font-size: 20px;
+      color: #ff3366;
+      margin: 10px 20px;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    /* IMAGE COLLAGE (HIDDEN INITIALLY) */
     .pics {
-      display: grid;
+      display: none;
       grid-template-columns: repeat(2, 1fr);
       gap: 14px;
-      margin-bottom: 25px;
+      margin-top: 20px;
+      animation: fadeIn 1.2s ease forwards;
     }
 
     .pics img {
@@ -46,11 +56,8 @@
       }
     }
 
-    /* BUTTON AREA */
+    /* BUTTONS */
     .buttons {
-      position: relative;
-      width: 320px;
-      height: 170px;
       margin-top: 10px;
     }
 
@@ -60,23 +67,17 @@
       border: none;
       border-radius: 14px;
       cursor: pointer;
-      position: absolute;
-      transition: transform 0.2s ease;
     }
 
     #yes {
       background: #ff4d79;
       color: white;
-      left: 20px;
-      bottom: 10px;
-      z-index: 2;
+      margin-right: 20px;
     }
 
     #no {
       background: #cccccc;
-      right: 20px;
-      bottom: 10px;
-      z-index: 1;
+      position: fixed;
     }
 
     /* FLOATING HEARTS */
@@ -90,17 +91,11 @@
     }
 
     @keyframes floatUp {
-      from {
-        transform: translateY(0) scale(1);
-        opacity: 0.8;
-      }
-      to {
-        transform: translateY(-110vh) scale(1.5);
-        opacity: 0;
-      }
+      from { transform: translateY(0); opacity: 0.8; }
+      to { transform: translateY(-110vh); opacity: 0; }
     }
 
-    /* CONFETTI HEARTS */
+    /* HEART CONFETTI */
     .confetti {
       position: fixed;
       font-size: 20px;
@@ -109,39 +104,52 @@
     }
 
     @keyframes fall {
-      from {
-        transform: translateY(-20px) rotate(0deg);
-        opacity: 1;
-      }
-      to {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0;
-      }
+      from { transform: translateY(-20px); opacity: 1; }
+      to { transform: translateY(110vh); opacity: 0; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
 
 <body>
 
+  <!-- QUESTION -->
+  <h1 id="question">Will you be my Valentine? 🥰❤️</h1>
+
+  <!-- BUTTONS -->
+  <div class="buttons" id="buttons">
+    <button id="yes" onclick="yesClicked()">YES 💓✨</button>
+    <button id="no">NO 🙁💔</button>
+  </div>
+
+  <!-- CUSTOM TEXT AFTER YES -->
+  <div id="yesText">
+    I’m so happy you said YES🥹💖(🔪). I love you babee.. Ik ghar baithke
+    valentines hoga🙄 par thik h.. just know that u mean the world to me
+    and I miss you a lot.. ya ya hardships bhare hue h but itss okay.. all that
+    matters is us chosing ourselves over the hardships.. please do keep chosing me🥹
+    for it makes me the happiest.. knowing ki u are by my side.. uhh I just love you
+    mwahh🤭.. milna h mujhe thik h na🔪 koshish kar.. boards ke baad atleast.. till then
+    remember that I love you.. and u are the only one for me.. kabhi overthink mat karna
+    its u or no one. I LOVE YOU❤️🫂✨ and a happy valentine's my beloved💕😘
+  
+   
+  </div>
+
   <!-- IMAGES -->
-  <div class="pics">
+  <div class="pics" id="pics">
     <img src="img1.jpg">
     <img src="img2.jpg">
     <img src="img3.jpg">
     <img src="img4.jpg">
   </div>
 
-  <!-- TEXT -->
-  <h1>Will you be my Valentine? ❤️</h1>
-
-  <!-- BUTTONS -->
-  <div class="buttons">
-    <button id="yes" onclick="yesClicked()">YES 😁❤️</button>
-    <button id="no">NO 😮💔</button>
-  </div>
-
   <script>
-    /* FLOATING BACKGROUND HEARTS */
+    /* FLOATING HEARTS BACKGROUND */
     setInterval(() => {
       const heart = document.createElement("div");
       heart.className = "heart";
@@ -149,40 +157,30 @@
       heart.style.left = Math.random() * 100 + "vw";
       heart.style.fontSize = 14 + Math.random() * 20 + "px";
       document.body.appendChild(heart);
-
       setTimeout(() => heart.remove(), 6000);
     }, 400);
 
-    /* NO BUTTON MOVEMENT + YES GROW */
-    let yesScale = 1;
+    /* NO BUTTON RUNS AWAY */
+    const noBtn = document.getElementById("no");
 
-    function moveNo() {
-      const noBtn = document.getElementById("no");
-      const container = document.querySelector(".buttons");
-
-      const maxX = container.clientWidth - noBtn.offsetWidth;
-      const maxY = container.clientHeight - noBtn.offsetHeight;
-
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
-
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-
-      yesScale += 0.15;
-      document.getElementById("yes").style.transform =
-        `scale(${yesScale})`;
+    function runAway() {
+      const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+      const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+      noBtn.style.left = Math.random() * maxX + "px";
+      noBtn.style.top = Math.random() * maxY + "px";
     }
 
-    document.getElementById("no").addEventListener("mouseenter", moveNo);
-    document.getElementById("no").addEventListener("touchstart", moveNo);
+    noBtn.addEventListener("mouseenter", runAway);
+    noBtn.addEventListener("touchstart", runAway);
 
     /* YES CLICK */
     function yesClicked() {
-      document.body.innerHTML = `
-        <h1>YAYYY 😋🫂❤️</h1>
-        <p style="font-size:20px;">Best decision ever 😌💓</p>
-      `;
+      document.getElementById("question").innerText = "YAYYYY 😁💖";
+      document.getElementById("buttons").style.display = "none";
+
+      document.getElementById("yesText").style.display = "block";
+      document.getElementById("pics").style.display = "grid";
+
       launchConfetti();
     }
 
@@ -195,7 +193,6 @@
         c.style.left = Math.random() * 100 + "vw";
         c.style.animationDuration = 2 + Math.random() * 2 + "s";
         document.body.appendChild(c);
-
         setTimeout(() => c.remove(), 4000);
       }
     }
