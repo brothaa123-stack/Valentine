@@ -6,12 +6,12 @@
 
   <style>
     body {
+      margin: 0;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      margin: 0;
+      justify-content: center;
       font-family: Arial, sans-serif;
       background: #ffe6eb;
       overflow: hidden;
@@ -20,25 +20,87 @@
 
     h1 {
       color: #ff3366;
-      margin: 20px 10px;
+      margin: 16px;
     }
 
-    /* ❤️ FLOATING HEARTS */
+    /* IMAGE COLLAGE */
+    .pics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 25px;
+    }
+
+    .pics img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+    @media (min-width: 768px) {
+      .pics img {
+        width: 230px;
+        height: 230px;
+      }
+    }
+
+    /* BUTTON AREA */
+    .buttons {
+      position: relative;
+      width: 320px;
+      height: 170px;
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 12px 26px;
+      font-size: 18px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      position: absolute;
+      transition: transform 0.2s ease;
+    }
+
+    #yes {
+      background: #ff4d79;
+      color: white;
+      left: 20px;
+      bottom: 10px;
+      z-index: 2;
+    }
+
+    #no {
+      background: #cccccc;
+      right: 20px;
+      bottom: 10px;
+      z-index: 1;
+    }
+
+    /* FLOATING HEARTS */
     .heart {
       position: fixed;
       bottom: -20px;
-      font-size: 24px;
+      font-size: 18px;
       animation: floatUp 6s linear infinite;
       opacity: 0.7;
       pointer-events: none;
     }
 
     @keyframes floatUp {
-      0% { transform: translateY(0) scale(1); opacity: 0.8; }
-      100% { transform: translateY(-110vh) scale(1.6); opacity: 0; }
+      from {
+        transform: translateY(0) scale(1);
+        opacity: 0.8;
+      }
+      to {
+        transform: translateY(-110vh) scale(1.5);
+        opacity: 0;
+      }
     }
 
-    /* ❤️ CONFETTI HEARTS */
+    /* CONFETTI HEARTS */
     .confetti {
       position: fixed;
       font-size: 20px;
@@ -47,68 +109,21 @@
     }
 
     @keyframes fall {
-      0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
-      100% { transform: translateY(110vh) rotate(720deg) scale(1.4); opacity: 0; }
-    }
-
-    /* 📸 IMAGE COLLAGE */
-    .pics {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 25px;
-    }
-
-    .pics img {
-      width: 160px;
-      height: 160px;
-      object-fit: cover;
-      border-radius: 18px;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-    }
-
-    @media (min-width: 768px) {
-      .pics img {
-        width: 220px;
-        height: 220px;
+      from {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: 1;
       }
-    }
-
-    .buttons {
-      position: relative;
-      width: 320px;
-      height: 130px;
-    }
-
-    button {
-      padding: 12px 26px;
-      font-size: 18px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      position: absolute;
-      transition: transform 0.3s ease;
-    }
-
-    #yes {
-      background: #ff4d79;
-      color: white;
-      left: 40px;
-      bottom: 10px;
-      transform: scale(1);
-    }
-
-    #no {
-      background: #cccccc;
-      right: 40px;
-      bottom: 10px;
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- 📸 IMAGE COLLAGE -->
+  <!-- IMAGES -->
   <div class="pics">
     <img src="img1.jpg">
     <img src="img2.jpg">
@@ -116,75 +131,74 @@
     <img src="img4.jpg">
   </div>
 
-  <!-- 💌 QUESTION -->
+  <!-- TEXT -->
   <h1>Will you be my Valentine? ❤️</h1>
 
-  <!-- 😈 BUTTONS -->
+  <!-- BUTTONS -->
   <div class="buttons">
-    <button id="yes" onclick="yesClicked()">YES 🥰💓</button>
-    <button id="no" onmouseover="moveNo()">NO 🙁💔</button>
+    <button id="yes" onclick="yesClicked()">YES 😁❤️</button>
+    <button id="no">NO 😮💔</button>
   </div>
 
   <script>
-    let yesScale = 1;
-
-    /* 😈 MOVE NO + GROW YES */
-    function moveNo() {
-      const noBtn = document.getElementById("no");
-      const yesBtn = document.getElementById("yes");
-      const box = document.querySelector(".buttons");
-
-      // Move NO button
-      noBtn.style.left =
-        Math.random() * (box.clientWidth - noBtn.offsetWidth) + "px";
-      noBtn.style.top =
-        Math.random() * (box.clientHeight - noBtn.offsetHeight) + "px";
-
-      // Grow YES button
-      yesScale += 0.15;
-      yesBtn.style.transform = `scale(${yesScale})`;
-    }
-
-    /* ❤️ HEART CONFETTI */
-    function launchConfetti() {
-      const hearts = ["❤️", "💖", "💗", "💕", "💘"];
-
-      for (let i = 0; i < 120; i++) {
-        const confetti = document.createElement("div");
-        confetti.className = "confetti";
-        confetti.innerText =
-          hearts[Math.floor(Math.random() * hearts.length)];
-        confetti.style.left = Math.random() * 100 + "vw";
-        confetti.style.top = "-10px";
-        confetti.style.animationDuration =
-          2 + Math.random() * 2 + "s";
-
-        document.body.appendChild(confetti);
-        setTimeout(() => confetti.remove(), 4000);
-      }
-    }
-
-    /* 💖 YES CLICK */
-    function yesClicked() {
-      launchConfetti();
-      setTimeout(() => {
-        document.body.innerHTML = `
-          <h1>YAY! ❤️🫂 I knew it 😋😌</h1>
-          <p style="font-size:20px;">Can’t wait for Valentine’s Day 😶‍🌫️🫶</p>
-        `;
-      }, 900);
-    }
-
-    /* ❤️ FLOATING HEARTS */
+    /* FLOATING BACKGROUND HEARTS */
     setInterval(() => {
       const heart = document.createElement("div");
       heart.className = "heart";
       heart.innerText = "❤️";
       heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+      heart.style.fontSize = 14 + Math.random() * 20 + "px";
       document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 7000);
+
+      setTimeout(() => heart.remove(), 6000);
     }, 400);
+
+    /* NO BUTTON MOVEMENT + YES GROW */
+    let yesScale = 1;
+
+    function moveNo() {
+      const noBtn = document.getElementById("no");
+      const container = document.querySelector(".buttons");
+
+      const maxX = container.clientWidth - noBtn.offsetWidth;
+      const maxY = container.clientHeight - noBtn.offsetHeight;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+
+      yesScale += 0.15;
+      document.getElementById("yes").style.transform =
+        `scale(${yesScale})`;
+    }
+
+    document.getElementById("no").addEventListener("mouseenter", moveNo);
+    document.getElementById("no").addEventListener("touchstart", moveNo);
+
+    /* YES CLICK */
+    function yesClicked() {
+      document.body.innerHTML = `
+        <h1>YAYYY 😋🫂❤️</h1>
+        <p style="font-size:20px;">Best decision ever 😌💓</p>
+      `;
+      launchConfetti();
+    }
+
+    /* HEART CONFETTI */
+    function launchConfetti() {
+      for (let i = 0; i < 60; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.innerText = "💖";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.animationDuration = 2 + Math.random() * 2 + "s";
+        document.body.appendChild(c);
+
+        setTimeout(() => c.remove(), 4000);
+      }
+    }
   </script>
 
 </body>
